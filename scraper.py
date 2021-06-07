@@ -1,7 +1,7 @@
 from telegram import *
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
-import config
+# import config
 import requests
 from requests.api import get
 from bs4 import BeautifulSoup
@@ -84,7 +84,7 @@ def scrapeItems():
 
 # print(fetchedItemsMsg)
 
-updater = Updater(token=config.ACCESS_TOKEN | access_token, use_context=True)
+updater = Updater(token=access_token, use_context=True)
 dispatcher = updater.dispatcher
 
 def fetch(update, context):
