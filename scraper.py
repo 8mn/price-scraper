@@ -56,30 +56,35 @@ def getInfo(url):
         printInfo(title,price,"primeabgb.com")
         
 
-for u in URLS:
-    getInfo(u)
     
-print(fetchedItems)  
-
+# print(fetchedItems)  
 fetchedItemsMsg = ""
 
+def makeFetchItemsMsg():
+    print("making fetched messages ...")
+    global fetchedItemsMsg
+    for i in fetchedItems:
+        fetchedItemsMsg += "---------------------------------\n"
+        fetchedItemsMsg += f"{i}\n"
+        for j, k in fetchedItems[i].items():
+            fetchedItemsMsg += f"{j} : {k}\n"
+    print("message sent successfully...")
 
 
-for i in fetchedItems:
-    fetchedItemsMsg += "#####################\n"
-    fetchedItemsMsg += f"{i}\n"
-    for j, k in fetchedItems[i].items():
-        fetchedItemsMsg += f"{j} : {k}\n"
+def scrapeItems():
+    print("start scraping...")
+    for u in URLS:
+        getInfo(u)
+    print("price scraped successfully...")
+    makeFetchItemsMsg()
 
-
-print(fetchedItemsMsg)
+# print(fetchedItemsMsg)
 
 updater = Updater(token=config.ACCESS_TOKEN, use_context=True)
-
 dispatcher = updater.dispatcher
 
-
 def fetch(update, context):
+    scrapeItems()
     context.bot.send_message(chat_id=update.effective_chat.id, 
                              text=fetchedItemsMsg)
 
@@ -88,6 +93,7 @@ start_handler = CommandHandler('fetch', fetch)
 dispatcher.add_handler(start_handler)
 
 updater.start_polling()
+print("listening for command..")
 
 
 # json = 
