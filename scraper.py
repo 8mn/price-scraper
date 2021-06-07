@@ -21,10 +21,11 @@ headers = {"User-Agent":'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Geck
 
 fetchedItems = {}
 
-def printInfo(title,price,retailer):
+def printInfo(title,price,retailer,link):
     fetchedItems[retailer] ={}
-    fetchedItems[retailer]["itemName"] = title
-    fetchedItems[retailer]["itemPrice"] = price
+    fetchedItems[retailer]["Name"] = title
+    fetchedItems[retailer]["Price"] = price
+    fetchedItems[retailer]["Buy here"] = link
     
 
 
@@ -34,26 +35,26 @@ def getInfo(url):
     if 'pcstudio' in url:
         title = soup.find(class_='product_title entry-title').get_text()
         price = soup.find(class_='price').get_text()
-        printInfo(title,price,"pcstudio.in")
+        printInfo(title,price,"PC studio",url)
     elif 'amazon' in url:
         title = soup.find(id='title').get_text().strip()
         price = soup.find(class_='a-size-medium a-color-price priceBlockBuyingPriceString').get_text().strip()
-        printInfo(title,price,"amazon.in")
+        printInfo(title,price,"Amazon",url)
     elif 'vedantcomputers' in url:
         title = soup.find(class_='title page-title').get_text()
         price = soup.find(class_='product-price').get_text()
-        printInfo(title,price,"vedantcomputers.com")
+        printInfo(title,price,"Vedant Computers",url)
     elif 'mdcomputers' in url:
         title = soup.find(class_='title-product').get_text().strip()
         price = soup.find(class_='price-new').get_text().strip()
         # availability = soup.find(class_='stock').get_text()
         # print(availability)
-        printInfo(title,price,"mdcomputers.com")
+        printInfo(title,price,"MD computers",url)
     elif 'primeabgb' in url:
         title = soup.find(class_='product_title entry-title').get_text()
         price = soup.find(class_='price pewc-main-price').get_text()
         price = price[-6:]
-        printInfo(title,price,"primeabgb.com")
+        printInfo(title,price,"Primeabgb",url)
         
 
     
