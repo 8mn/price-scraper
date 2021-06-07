@@ -6,6 +6,10 @@ import requests
 from requests.api import get
 from bs4 import BeautifulSoup
 
+import os
+
+access_token = os.environ.get('ACCESS_TOKEN')
+
 
 
 URLS = ['https://www.pcstudio.in/product/adata-xpg-gammix-d30-8gb-8gbx1-ddr4-3200mhz-red/',
@@ -80,7 +84,7 @@ def scrapeItems():
 
 # print(fetchedItemsMsg)
 
-updater = Updater(token=config.ACCESS_TOKEN, use_context=True)
+updater = Updater(token=config.ACCESS_TOKEN | access_token, use_context=True)
 dispatcher = updater.dispatcher
 
 def fetch(update, context):
