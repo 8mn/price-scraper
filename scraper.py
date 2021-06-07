@@ -1,12 +1,12 @@
 from telegram import *
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
-
 import config
-
 import requests
 from requests.api import get
 from bs4 import BeautifulSoup
+
+
 
 URLS = ['https://www.pcstudio.in/product/adata-xpg-gammix-d30-8gb-8gbx1-ddr4-3200mhz-red/',
         'https://www.amazon.in/gp/product/B085HSGQ1Y',
@@ -27,7 +27,6 @@ def printInfo(title,price,retailer,link):
     fetchedItems[retailer]["Price"] = price
     fetchedItems[retailer]["Buy here"] = link
     
-
 
 def getInfo(url):
     page = requests.get(url,headers=headers)
@@ -95,6 +94,8 @@ dispatcher.add_handler(start_handler)
 
 updater.start_polling()
 print("listening for command..")
+
+
 
 
 # json = 
