@@ -84,7 +84,7 @@ def scrapeItems():
 
 # print(fetchedItemsMsg)
 
-updater = Updater(token=access_token, use_context=True)
+updater = Updater(token=os.environ.get("access_token"), use_context=True)
 dispatcher = updater.dispatcher
 
 def fetch(update, context):
