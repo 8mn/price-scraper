@@ -1,4 +1,5 @@
 from telegram import *
+from telegram.error import Conflict
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 # import config
@@ -35,29 +36,32 @@ def printInfo(title,price,retailer,link):
 def getInfo(url):
     page = requests.get(url,headers=headers)
     soup = BeautifulSoup(page.content,'html.parser')
-    if 'pcstudio' in url:
-        title = soup.find(class_='product_title entry-title').get_text()
-        price = soup.find(class_='price').get_text()
-        printInfo(title,price,"PC studio",url)
-    elif 'amazon' in url:
-        title = soup.find(id='title').get_text().strip()
-        price = soup.find(class_='a-size-medium a-color-price priceBlockBuyingPriceString').get_text().strip()
-        printInfo(title,price,"Amazon",url)
-    elif 'vedantcomputers' in url:
-        title = soup.find(class_='title page-title').get_text()
-        price = soup.find(class_='product-price').get_text()
-        printInfo(title,price,"Vedant Computers",url)
-    elif 'mdcomputers' in url:
-        title = soup.find(class_='title-product').get_text().strip()
-        price = soup.find(class_='price-new').get_text().strip()
-        # availability = soup.find(class_='stock').get_text()
-        # print(availability)
-        printInfo(title,price,"MD computers",url)
-    elif 'primeabgb' in url:
-        title = soup.find(class_='product_title entry-title').get_text()
-        price = soup.find(class_='price pewc-main-price').get_text()
-        price = price[-6:]
-        printInfo(title,price,"Primeabgb",url)
+    try:
+        if 'pcstudio' in url:
+            title = soup.find(class_='product_title entry-title').get_text()
+            price = soup.find(class_='price').get_text()
+            printInfo(title,price,"PC studio",url)
+        elif 'amazon' in url:
+            title = soup.find(id='title').get_text().strip()
+            price = soup.find(class_='a-size-medium a-color-price priceBlockBuyingPriceString').get_text().strip()
+            printInfo(title,price,"Amazon",url)
+        elif 'vedantcomputers' in url:
+            title = soup.find(class_='title page-title').get_text()
+            price = soup.find(class_='product-price').get_text()
+            printInfo(title,price,"Vedant Computers",url)
+        elif 'mdcomputers' in url:
+            title = soup.find(class_='title-product').get_text().strip()
+            price = soup.find(class_='price-new').get_text().strip()
+            # availability = soup.find(class_='stock').get_text()
+            # print(availability)
+            printInfo(title,price,"MD computers",url)
+        elif 'primeabgb' in url:
+            title = soup.find(class_='product_title entry-title').get_text()
+            price = soup.find(class_='price pewc-main-price').get_text()
+            price = price[-6:]
+            printInfo(title,price,"Primeabgb",url)
+    except AttributeError:
+        print(f"Error could not scrape price!")
         
 
     
@@ -83,6 +87,7 @@ def scrapeItems():
     makeFetchItemsMsg()
 
 # print(fetchedItemsMsg)
+#os.environ.get("access_token")
 
 updater = Updater(token=os.environ.get("access_token"), use_context=True)
 dispatcher = updater.dispatcher
@@ -95,7 +100,6 @@ def fetch(update, context):
 
 start_handler = CommandHandler('fetch', fetch)
 dispatcher.add_handler(start_handler)
-
 updater.start_polling()
 print("listening for command..")
 
